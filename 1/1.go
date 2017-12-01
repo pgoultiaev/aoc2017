@@ -3,8 +3,6 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
-	"strconv"
-	"strings"
 )
 
 // from http://adventofcode.com/2017/day/1
@@ -16,50 +14,21 @@ func main() {
 	}
 
 	s := string(buf)
-	slicedString := strings.Split(s, "")
-	l := len(slicedString)
+	l := len(s)
 
+	fmt.Printf("Part one total sum = %d\n", solve(s, 1))
+	fmt.Printf("Part two total sum = %d\n", solve(s, l/2))
+}
+
+func solve(input string, offset int) int {
 	sum := 0
-	var next string
-	for i := 0; i < l; i++ {
-		curr := slicedString[i]
-
-		// if end of list reached, point to first item
-		if i == l-1 {
-			next = slicedString[0]
-		} else {
-			next = slicedString[i+1]
-		}
+	for i := range input {
+		curr := input[i]
+		next := input[(i+offset)%len(input)]
 
 		if curr == next {
-			digit, _ := strconv.Atoi(curr)
-			sum += digit
+			sum += int(curr - '0')
 		}
 	}
-
-	fmt.Printf("Part one total sum = %d\n", sum)
-
-	halfway := l / 2
-	sumHalfway := 0
-	var nextHalfway string
-	for i := 0; i < l; i++ {
-		curr := slicedString[i]
-
-		// if end of list reached, point to first item
-		if i == l-1 {
-			nextHalfway = slicedString[halfway-1]
-		} else if i+l/2 >= l {
-			n := i + halfway
-			nextHalfway = slicedString[n-l]
-		} else {
-			nextHalfway = slicedString[i+halfway]
-		}
-
-		if curr == nextHalfway {
-			digit, _ := strconv.Atoi(curr)
-			sumHalfway += digit
-		}
-	}
-
-	fmt.Printf("Part two total sum = %d\n", sumHalfway)
+	return sum
 }
