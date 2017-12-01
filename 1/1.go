@@ -17,14 +17,15 @@ func main() {
 
 	s := string(buf)
 	slicedString := strings.Split(s, "")
+	l := len(slicedString)
 
 	sum := 0
 	var next string
-	for i := 0; i < len(slicedString); i++ {
+	for i := 0; i < l; i++ {
 		curr := slicedString[i]
 
 		// if end of list reached, point to first item
-		if i == len(slicedString)-1 {
+		if i == l-1 {
 			next = slicedString[0]
 		} else {
 			next = slicedString[i+1]
@@ -36,5 +37,29 @@ func main() {
 		}
 	}
 
-	fmt.Printf("total sum = %d", sum)
+	fmt.Printf("Part one total sum = %d\n", sum)
+
+	halfway := l / 2
+	sumHalfway := 0
+	var nextHalfway string
+	for i := 0; i < l; i++ {
+		curr := slicedString[i]
+
+		// if end of list reached, point to first item
+		if i == l-1 {
+			nextHalfway = slicedString[halfway-1]
+		} else if i+l/2 >= l {
+			n := i + halfway
+			nextHalfway = slicedString[n-l]
+		} else {
+			nextHalfway = slicedString[i+halfway]
+		}
+
+		if curr == nextHalfway {
+			digit, _ := strconv.Atoi(curr)
+			sumHalfway += digit
+		}
+	}
+
+	fmt.Printf("Part two total sum = %d\n", sumHalfway)
 }
