@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"fmt"
 	"log"
-	"math"
 	"os"
 	"sort"
 	"strconv"
@@ -26,7 +25,6 @@ func main() {
 
 		slicedInts := convStringArrayToIntArray(slicedString)
 		sort.Ints(slicedInts[:])
-		fmt.Printf("%v", slicedInts)
 		sum1 += (slicedInts[len(slicedInts)-1] - slicedInts[0])
 		sum2 += findDivisible(slicedInts)
 	}
@@ -47,17 +45,8 @@ func convStringArrayToIntArray(sa []string) []int {
 func findDivisible(ia []int) int {
 	for i, e := range ia {
 		for j, o := range ia {
-			if j == i {
-				continue
-			}
-
-			div := float64(float64(e) / float64(o))
-			if o > e {
-				div = float64(float64(o) / float64(e))
-			}
-			_, frac := math.Modf(div)
-			if frac == 0.0 {
-				return int(div)
+			if j != i && e%o == 0 {
+				return e / o
 			}
 		}
 	}
