@@ -8,10 +8,31 @@ type Player struct {
 	visited          map[Point]int
 	endSumValue      int
 	endSumValueFound bool
+	direction        Direction
+	distTravelled    int
 }
 
 type Point struct {
 	X, Y int
+}
+
+type Direction struct {
+	dx, dy int
+}
+
+var (
+	Right  = Direction{1, 0}
+	Up     = Direction{0, 1}
+	Left   = Direction{-1, 0}
+	Down   = Direction{0, -1}
+	origin = Point{0, 0}
+)
+
+var nextDirection = map[Direction]Direction{
+	Right: Up,
+	Up:    Left,
+	Left:  Down,
+	Down:  Right,
 }
 
 func main() {
@@ -24,46 +45,35 @@ func solve(end int) (int, int) {
 		return 0, 1
 	}
 
-	origin := Point{0, 0}
-	p := &Player{currPosition: origin, index: 1, visited: map[Point]int{Point{0, 0}: 1}}
-	sqSize := 0
+	p := &Player{currPosition: origin, index: 1, visited: map[Point]int{Point{0, 0}: 1}, direction: Right, distTravelled: 0}
+	sqSize := 2
 
 	for p.index < end {
-		p.traverse("Up", sqSize-1, end)
-		p.traverse("Left", sqSize, end)
-		p.traverse("Down", sqSize, end)
-		p.traverse("Right", sqSize+1, end)
-		sqSize += 2
+		sum := p.sum()
+		if sum > end && !p.endSumValueFound {
+			p.endSumValue = sum
+			p.endSumValueFound = true
+		}
+		p.visited[p.currPosition] = sum
+
+		if p.distTravelled == sqSize/2 {
+			p.direction = nextDirection[p.direction]
+		} else if p.distTravelled == sqSize {
+			p.distTravelled = 0
+			sqSize += 2
+			p.direction = nextDirection[p.direction]
+		}
+		p.traverse(p.direction, end)
+		p.distTravelled++
+		p.index++
 	}
 
 	return taxiDistance(origin, p.currPosition), p.endSumValue
 }
 
-func (p *Player) traverse(direction string, dist, end int) {
-	if dist > 0 {
-		distTravelled := 0
-		for distTravelled < dist && p.index < end {
-			switch direction {
-			case "Up":
-				p.currPosition.Y++
-			case "Down":
-				p.currPosition.Y--
-			case "Right":
-				p.currPosition.X++
-			case "Left":
-				p.currPosition.X--
-			}
-			p.index++
-			sum := p.sum()
-
-			if sum > end && !p.endSumValueFound {
-				p.endSumValue = sum
-				p.endSumValueFound = true
-			}
-			p.visited[p.currPosition] = sum
-			distTravelled++
-		}
-	}
+func (p *Player) traverse(direction Direction, end int) {
+	p.currPosition.X += direction.dx
+	p.currPosition.Y += direction.dy
 }
 
 func (p *Player) sum() (sum int) {
