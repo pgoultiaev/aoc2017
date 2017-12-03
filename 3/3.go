@@ -29,40 +29,40 @@ func solve(end int) (int, int) {
 	sqSize := 0
 
 	for p.index < end {
-		p.traverse("Right", 1, end)
-
-		sqSize += 2
 		p.traverse("Up", sqSize-1, end)
 		p.traverse("Left", sqSize, end)
 		p.traverse("Down", sqSize, end)
-		p.traverse("Right", sqSize, end)
+		p.traverse("Right", sqSize+1, end)
+		sqSize += 2
 	}
 
 	return taxiDistance(origin, p.currPosition), p.endSumValue
 }
 
 func (p *Player) traverse(direction string, dist, end int) {
-	distTravelled := 0
-	for distTravelled < dist && p.index < end {
-		switch direction {
-		case "Up":
-			p.currPosition.Y++
-		case "Down":
-			p.currPosition.Y--
-		case "Right":
-			p.currPosition.X++
-		case "Left":
-			p.currPosition.X--
-		}
-		p.index++
-		sum := p.sum()
+	if dist > 0 {
+		distTravelled := 0
+		for distTravelled < dist && p.index < end {
+			switch direction {
+			case "Up":
+				p.currPosition.Y++
+			case "Down":
+				p.currPosition.Y--
+			case "Right":
+				p.currPosition.X++
+			case "Left":
+				p.currPosition.X--
+			}
+			p.index++
+			sum := p.sum()
 
-		if sum > end && !p.endSumValueFound {
-			p.endSumValue = sum
-			p.endSumValueFound = true
+			if sum > end && !p.endSumValueFound {
+				p.endSumValue = sum
+				p.endSumValueFound = true
+			}
+			p.visited[p.currPosition] = sum
+			distTravelled++
 		}
-		p.visited[p.currPosition] = sum
-		distTravelled++
 	}
 }
 
