@@ -63,7 +63,7 @@ func solve(end int) (int, int) {
 			sqSize += 2
 			p.direction = nextDirection[p.direction]
 		}
-		p.traverse(p.direction, end)
+		p.traverse(p.direction)
 		p.distTravelled++
 		p.index++
 	}
@@ -71,7 +71,7 @@ func solve(end int) (int, int) {
 	return taxiDistance(origin, p.currPosition), p.endSumValue
 }
 
-func (p *Player) traverse(direction Direction, end int) {
+func (p *Player) traverse(direction Direction) {
 	p.currPosition.X += direction.dx
 	p.currPosition.Y += direction.dy
 }
