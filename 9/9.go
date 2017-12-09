@@ -17,18 +17,21 @@ func main() {
 
 	scanner := bufio.NewScanner(file)
 	sumAllGroups := 0
+	garbageSum := 0
 	for scanner.Scan() {
 		t := scanner.Text()
 
-		sumAllGroups += findSumGroups(t)
+		s, gs := findSumGroups(t)
+		sumAllGroups += s
+		garbageSum += gs
 	}
 
-	fmt.Printf("Sum of all groups %d", sumAllGroups)
+	fmt.Printf("Sum of all groups %d, Garbage count: %d", sumAllGroups, garbageSum)
 }
 
 // in: string
 // out: sum of groups in string
-func findSumGroups(s string) int {
+func findSumGroups(s string) (int, garbageCounter int) {
 	//fmt.Printf("input: %s\n", s)
 	st := make(stack, 0)
 
@@ -51,6 +54,8 @@ func findSumGroups(s string) int {
 		switch {
 		case char == "!":
 			neglectNext = true
+		case garbage && char != ">":
+			garbageCounter++
 		case char == ">":
 			garbage = false
 		case char == "{" && !garbage:
@@ -84,7 +89,7 @@ func findSumGroups(s string) int {
 		}
 		i++
 	}
-	return sumGroups + sum(mem)
+	return sumGroups + sum(mem), garbageCounter
 }
 
 func upOne(pa []Paren, index int) {
