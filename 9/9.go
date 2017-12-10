@@ -29,10 +29,7 @@ func main() {
 	fmt.Printf("Sum of all groups %d, Garbage count: %d", sumAllGroups, garbageSum)
 }
 
-// in: string
-// out: sum of groups in string
 func findSumGroups(s string) (int, garbageCounter int) {
-	//fmt.Printf("input: %s\n", s)
 	st := make(stack, 0)
 
 	sumGroups := 0
@@ -46,7 +43,6 @@ func findSumGroups(s string) (int, garbageCounter int) {
 		char := string(rune)
 
 		if neglectNext == true {
-			//fmt.Print("neglecting this char\n")
 			neglectNext = false
 			continue
 		}
@@ -77,10 +73,8 @@ func findSumGroups(s string) (int, garbageCounter int) {
 				}
 				mem = append(mem, Paren{"", i, 1})
 
-				//fmt.Printf("found group: \n\tmem: %+v\n\tstack: %+v\n\tlevel: %d\n", mem, st, level)
 				if len(st) == 0 {
 					sumGroups += sum(mem)
-					//fmt.Printf("set away mem, sumGroups is %d\n", sumGroups)
 					mem = []Paren{}
 				}
 			}
