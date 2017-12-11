@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
+	"sort"
 	"strings"
 )
 
@@ -26,6 +27,8 @@ var (
 	sw     = Direction{-1, 0}
 	se     = Direction{1, -1}
 	origin = Point{0, 0, 0}
+
+	distances = []int{}
 
 	directions = map[string]Direction{
 		"n":  n,
@@ -54,8 +57,15 @@ func solve(sa []string) {
 	p := Player{position: origin}
 	for _, dir := range sa {
 		p.move(directions[dir])
+		distances = append(distances, hexGridDistance(origin, p.position))
 	}
-	fmt.Printf("Solve : last coordinate [%d,%d,%d], hexgridDistance: %d\n", p.position.X, p.position.Y, p.position.Z, hexGridDistance(origin, p.position))
+	fmt.Printf("Part one : last coordinate [%d,%d,%d], hexgridDistance: %d\n", p.position.X, p.position.Y, p.position.Z, hexGridDistance(origin, p.position))
+	fmt.Printf("Part two : largest hexgridDistance: %d\n", max(distances))
+}
+
+func max(ia []int) int {
+	sort.Ints(ia[:])
+	return ia[len(ia)-1]
 }
 
 func (p *Player) move(direction Direction) {
