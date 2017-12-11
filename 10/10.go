@@ -23,7 +23,7 @@ func main() {
 	fmt.Printf("slicedInts: %d\n", partOne[0]*partOne[1])
 
 	// Part two
-	fmt.Printf("knot hash %s", partTwo(makeRange(0, 255), slicedASCII))
+	fmt.Printf("knot hash %s\n", partTwo(makeRange(0, 255), slicedASCII))
 }
 
 func partTwo(a []int, ba []byte) (hash string) {
