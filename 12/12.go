@@ -44,17 +44,14 @@ func main() {
 		}
 	}
 
-	set0 := nodes["0"]
-	for key := range nodes["0"] {
-		traverse(key, set0, nodes, map[string]bool{})
-	}
+	set0 := traverse("0", map[string]bool{}, nodes, map[string]bool{})
 
 	fmt.Printf("Part one: %d\n", len(set0))
 }
 
-func traverse(n string, set0 map[string]bool, nodes map[string]map[string]bool, visited map[string]bool) {
+func traverse(n string, set0 map[string]bool, nodes map[string]map[string]bool, visited map[string]bool) map[string]bool {
 	if len(visited) == len(nodes) {
-		return
+		return set0
 	}
 	for k := range nodes[n] {
 		set0[k] = true
@@ -64,4 +61,5 @@ func traverse(n string, set0 map[string]bool, nodes map[string]map[string]bool, 
 			traverse(k, set0, nodes, visited)
 		}
 	}
+	return set0
 }
