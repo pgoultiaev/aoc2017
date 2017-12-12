@@ -45,8 +45,23 @@ func main() {
 	}
 
 	set0 := traverse("0", map[string]bool{}, nodes, map[string]bool{})
+	independentGroups := getIndependentGroups(nodes)
 
 	fmt.Printf("Part one: %d\n", len(set0))
+	fmt.Printf("Part two: %d\n", independentGroups)
+}
+
+func getIndependentGroups(nodes map[string]map[string]bool) (groupCount int) {
+	nodeList := nodes
+
+	for k := range nodeList {
+		set := traverse(k, map[string]bool{}, nodes, map[string]bool{})
+		for k := range set {
+			delete(nodeList, k)
+		}
+		groupCount++
+	}
+	return groupCount
 }
 
 func traverse(n string, set0 map[string]bool, nodes map[string]map[string]bool, visited map[string]bool) map[string]bool {
