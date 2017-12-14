@@ -1,6 +1,8 @@
 package main
 
-import "testing"
+import (
+	"testing"
+)
 
 func Test_getBinVal(t *testing.T) {
 	tests := []struct {
@@ -18,6 +20,26 @@ func Test_getBinVal(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			if got, _ := getBinVal(tt.s); got != tt.want {
 				t.Errorf("getBinVal() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func Test_solve2(t *testing.T) {
+	type args struct {
+		grid [128][]string
+	}
+	tests := []struct {
+		name           string
+		grid           [128][]string
+		wantNumRegions int
+	}{
+		{name: "example", grid: [128][]string{[]string{"1", "1", "0"}, []string{"0", "1", "0"}, []string{"0", "0", "1"}}, wantNumRegions: 2},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if gotNumRegions := solve2(tt.grid); gotNumRegions != tt.wantNumRegions {
+				t.Errorf("solve2() = %v, want %v", gotNumRegions, tt.wantNumRegions)
 			}
 		})
 	}

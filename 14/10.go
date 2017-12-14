@@ -1,7 +1,7 @@
 package main
 
 import (
-	"bytes"
+	"fmt"
 	"strconv"
 )
 
@@ -41,11 +41,11 @@ func partTwo(a []int, ba []byte) (hash string) {
 }
 
 func knotHash(ia []int) string {
-	var buffer bytes.Buffer
-	for i := range ia {
-		buffer.WriteString(strconv.FormatInt(int64(ia[i]), 16))
+	hexString := ""
+	for _, element := range ia {
+		hexString += fmt.Sprintf("%.02x", element)
 	}
-	return buffer.String()
+	return hexString
 }
 
 func partOne(a []int, ia []int, cp, ss int) (partOne []int, currPos, skipSize int) {
