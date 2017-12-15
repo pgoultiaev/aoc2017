@@ -3,8 +3,9 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
-	"strconv"
 	"strings"
+
+	"github.com/pgoultiaev/aoc2017/util"
 )
 
 func main() {
@@ -15,7 +16,7 @@ func main() {
 
 	s := string(buf)
 	slicedString := strings.Split(s, "\t")
-	slicedInts := convStringArrayToIntArray(slicedString)
+	slicedInts := util.ConvStringArrayToIntArray(slicedString)
 
 	// fmt.Printf("input: %v\n", slicedInts)
 	fmt.Printf("part one: %d\n", solve(slicedInts))
@@ -44,7 +45,7 @@ func solve(input []int) (it int) {
 
 		// fmt.Printf("mem: %v\n", mem)
 		for _, e := range mem {
-			if equals(input, e) {
+			if util.Equals(input, e) {
 				found = true
 				return it + 1
 			}
@@ -53,20 +54,6 @@ func solve(input []int) (it int) {
 		it++
 	}
 	return it
-}
-
-func equals(a, b []int) bool {
-	if len(a) != len(b) {
-		return false
-	}
-
-	for i, e := range a {
-		if e != b[i] {
-			return false
-		}
-	}
-	//fmt.Printf("equals: %+v == %+v\n", a, b)
-	return true
 }
 
 func firstMax(a []int) (index, val int) {
@@ -79,13 +66,4 @@ func firstMax(a []int) (index, val int) {
 	}
 	//fmt.Printf("found max %d at %d\n", max, index)
 	return index, max
-}
-
-func convStringArrayToIntArray(sa []string) []int {
-	var output []int
-	for _, e := range sa {
-		i, _ := strconv.Atoi(e)
-		output = append(output, i)
-	}
-	return output
 }

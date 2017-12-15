@@ -1,6 +1,7 @@
 package main
 
 import "fmt"
+import "github.com/pgoultiaev/aoc2017/util"
 
 type Player struct {
 	currPosition     Point
@@ -94,15 +95,7 @@ func (p *Player) sum() (sum int) {
 }
 
 func taxiDistance(p1, p2 Point) int {
-	dX := abs(p1.X - p2.X)
-	dY := abs(p1.Y - p2.Y)
+	dX := util.Abs(p1.X - p2.X)
+	dY := util.Abs(p1.Y - p2.Y)
 	return dX + dY
-}
-
-// Why does golang not have a Abs(int) function in the math package?
-func abs(x int) int {
-	if x < 0 {
-		return -x
-	}
-	return x
 }

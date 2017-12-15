@@ -5,8 +5,9 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"sort"
 	"strings"
+
+	"github.com/pgoultiaev/aoc2017/util"
 )
 
 func main() {
@@ -35,7 +36,7 @@ func main() {
 			m[word] = word
 
 			for k, compareWord := range slicedString {
-				if isPermutation(word, compareWord) && k != j {
+				if util.IsPermutation(word, compareWord) && k != j {
 					//fmt.Printf("found permutation [%s,%s] at line %d\n", word, compareWord, i)
 					valid2 = false
 				}
@@ -53,22 +54,4 @@ func main() {
 
 	fmt.Printf("part one: %d\n", sum1)
 	fmt.Printf("part two: %d\n", sum2)
-}
-
-func isPermutation(s1, s2 string) bool {
-	if len(s1) != len(s2) {
-		return false
-	}
-
-	s1split := strings.Split(s1, "")
-	sort.Strings(s1split)
-	s2split := strings.Split(s2, "")
-	sort.Strings(s2split)
-
-	for i := range s1split {
-		if s1split[i] != s2split[i] {
-			return false
-		}
-	}
-	return true
 }

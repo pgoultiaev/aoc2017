@@ -5,6 +5,8 @@ import (
 	"io/ioutil"
 	"sort"
 	"strings"
+
+	"github.com/pgoultiaev/aoc2017/util"
 )
 
 type Point struct {
@@ -75,16 +77,8 @@ func (p *Player) move(direction Direction) {
 }
 
 func hexGridDistance(p1, p2 Point) int {
-	dX := abs(p1.X - p2.X)
-	dY := abs(p1.Y - p2.Y)
-	dZ := abs(p1.Z - p2.Z)
+	dX := util.Abs(p1.X - p2.X)
+	dY := util.Abs(p1.Y - p2.Y)
+	dZ := util.Abs(p1.Z - p2.Z)
 	return (dX + dY + dZ) / 2
-}
-
-// Why does golang not have a Abs(int) function in the math package?
-func abs(x int) int {
-	if x < 0 {
-		return -x
-	}
-	return x
 }

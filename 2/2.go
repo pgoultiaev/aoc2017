@@ -6,8 +6,9 @@ import (
 	"log"
 	"os"
 	"sort"
-	"strconv"
 	"strings"
+
+	"github.com/pgoultiaev/aoc2017/util"
 )
 
 func main() {
@@ -23,7 +24,7 @@ func main() {
 	for scanner.Scan() {
 		slicedString := strings.Split(scanner.Text(), "\t")
 
-		slicedInts := convStringArrayToIntArray(slicedString)
+		slicedInts := util.ConvStringArrayToIntArray(slicedString)
 		sort.Ints(slicedInts[:])
 		sum1 += (slicedInts[len(slicedInts)-1] - slicedInts[0])
 		sum2 += findDivisible(slicedInts)
@@ -31,15 +32,6 @@ func main() {
 
 	fmt.Printf("part one: %d\n", sum1)
 	fmt.Printf("part two: %d\n", sum2)
-}
-
-func convStringArrayToIntArray(sa []string) []int {
-	var output []int
-	for _, e := range sa {
-		i, _ := strconv.Atoi(e)
-		output = append(output, i)
-	}
-	return output
 }
 
 func findDivisible(ia []int) int {

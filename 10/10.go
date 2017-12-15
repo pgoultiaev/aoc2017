@@ -3,8 +3,9 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
-	"strconv"
 	"strings"
+
+	"github.com/pgoultiaev/aoc2017/util"
 )
 
 func main() {
@@ -14,21 +15,21 @@ func main() {
 	}
 
 	s := string(buf)
-	slicedASCII := convStringArrayToByteArray(strings.Split(s, ""))
-	slicedInts := convStringArrayToIntArray(strings.Split(s, ","))
+	slicedASCII := util.ConvStringArrayToByteArray(strings.Split(s, ""))
+	slicedInts := util.ConvStringArrayToIntArray(strings.Split(s, ","))
 
 	// Part one : 19591
-	partOne, _, _ := partOne(makeRange(0, 255), slicedInts, 0, 0)
+	partOne, _, _ := partOne(util.MakeRange(0, 255), slicedInts, 0, 0)
 	fmt.Printf("slicedInts: %d\n", partOne[0]*partOne[1])
 
 	// Part two
-	fmt.Printf("knot hash %s\n", partTwo(makeRange(0, 255), slicedASCII))
+	fmt.Printf("knot hash %s\n", partTwo(util.MakeRange(0, 255), slicedASCII))
 }
 
 func partTwo(a []int, ba []byte) (hash string) {
 	suffix := []byte{17, 31, 73, 47, 23}
 	ba = append(ba, suffix...)
-	ia := convByteArrayToIntArray(ba)
+	ia := util.ConvByteArrayToIntArray(ba)
 
 	rounds := 0
 	currPos := 0
@@ -80,7 +81,7 @@ func partOne(a []int, ia []int, cp, ss int) (partOne []int, currPos, skipSize in
 				toSort = append(a[currPos:], a[:((currPos+num)%len(a))]...)
 			}
 
-			toSort = reverseOrder(toSort)
+			toSort = util.ReverseOrder(toSort)
 			// fmt.Printf("reversed toSort: %+v\n", toSort)
 
 			for j := range toSort {
@@ -95,45 +96,4 @@ func partOne(a []int, ia []int, cp, ss int) (partOne []int, currPos, skipSize in
 		i++
 	}
 	return a, currPos, skipSize
-}
-
-func reverseOrder(a []int) []int {
-	for i, j := 0, len(a)-1; i < j; i, j = i+1, j-1 {
-		a[i], a[j] = a[j], a[i]
-	}
-	return a
-}
-
-func makeRange(min, max int) []int {
-	a := make([]int, max-min+1)
-	for i := range a {
-		a[i] = min + i
-	}
-	return a
-}
-
-func convStringArrayToIntArray(sa []string) []int {
-	var output []int
-	for _, e := range sa {
-		i, _ := strconv.Atoi(e)
-		output = append(output, i)
-	}
-	return output
-}
-
-func convStringArrayToByteArray(s []string) []byte {
-	var output []byte
-	for _, e := range s {
-		i := []byte(e)
-		output = append(output, i...)
-	}
-	return output
-}
-
-func convByteArrayToIntArray(ba []byte) []int {
-	var output []int
-	for _, e := range ba {
-		output = append(output, int(e))
-	}
-	return output
 }

@@ -3,8 +3,9 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
-	"strconv"
 	"strings"
+
+	"github.com/pgoultiaev/aoc2017/util"
 )
 
 func main() {
@@ -15,7 +16,7 @@ func main() {
 
 	s := string(buf)
 	slicedString := strings.Split(s, "\n")
-	slicedInts := convStringArrayToIntArray(slicedString)
+	slicedInts := util.ConvStringArrayToIntArray(slicedString)
 
 	si2 := make([]int, len(slicedInts))
 	copy(si2, slicedInts)
@@ -75,13 +76,4 @@ func solvePartTwo(ia []int) (count1 int) {
 		//fmt.Printf("%v\n", ia)
 	}
 	return count1
-}
-
-func convStringArrayToIntArray(sa []string) []int {
-	var output []int
-	for _, e := range sa {
-		i, _ := strconv.Atoi(e)
-		output = append(output, i)
-	}
-	return output
 }
