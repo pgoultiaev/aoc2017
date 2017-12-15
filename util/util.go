@@ -6,16 +6,7 @@ import (
 	"strings"
 )
 
-func ConvStringArrayToIntArray(sa []string) []int {
-	var output []int
-	for _, e := range sa {
-		i, _ := strconv.Atoi(e)
-		output = append(output, i)
-	}
-	return output
-}
-
-// Why does golang not have a Abs(int) function in the math package?
+// Abs returns the absolute value of an int
 func Abs(x int) int {
 	if x < 0 {
 		return -x
@@ -23,6 +14,7 @@ func Abs(x int) int {
 	return x
 }
 
+// IsPermutation returns true if two strings are permutations of each other
 func IsPermutation(s1, s2 string) bool {
 	if len(s1) != len(s2) {
 		return false
@@ -41,6 +33,7 @@ func IsPermutation(s1, s2 string) bool {
 	return true
 }
 
+// Equals returns true if two int arrays have exactly the same elements in the same order
 func Equals(a, b []int) bool {
 	if len(a) != len(b) {
 		return false
@@ -55,6 +48,7 @@ func Equals(a, b []int) bool {
 	return true
 }
 
+// ReverseOrder Reverses order of an int array
 func ReverseOrder(a []int) []int {
 	for i, j := 0, len(a)-1; i < j; i, j = i+1, j-1 {
 		a[i], a[j] = a[j], a[i]
@@ -62,6 +56,7 @@ func ReverseOrder(a []int) []int {
 	return a
 }
 
+// MakeRange Creates an int array with ints starting with min and ending with max
 func MakeRange(min, max int) []int {
 	a := make([]int, max-min+1)
 	for i := range a {
@@ -70,6 +65,17 @@ func MakeRange(min, max int) []int {
 	return a
 }
 
+// ConvStringArrayToIntArray converts a string array to an int array
+func ConvStringArrayToIntArray(sa []string) []int {
+	var output []int
+	for _, e := range sa {
+		i, _ := strconv.Atoi(e)
+		output = append(output, i)
+	}
+	return output
+}
+
+// ConvStringArrayToByteArray converts a string array to a byte array
 func ConvStringArrayToByteArray(s []string) []byte {
 	var output []byte
 	for _, e := range s {
@@ -79,6 +85,7 @@ func ConvStringArrayToByteArray(s []string) []byte {
 	return output
 }
 
+// ConvByteArrayToIntArray converts a byte array to an int array
 func ConvByteArrayToIntArray(ba []byte) []int {
 	var output []int
 	for _, e := range ba {
