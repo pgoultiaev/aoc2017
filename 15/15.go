@@ -1,18 +1,14 @@
 package main
 
-import (
-	"strconv"
-)
-
 func main() {
 	// from input
-	a := int64(516)
-	b := int64(190)
+	a := 516
+	b := 190
 
-	factorA := int64(16807)
-	factorB := int64(48271)
+	factorA := 16807
+	factorB := 48271
 
-	modAB := int64(2147483647)
+	modAB := 2147483647
 
 	finalCount := solve(a, b, factorA, factorB, modAB)
 	println(finalCount)
@@ -22,7 +18,7 @@ func main() {
 }
 
 // Part two
-func solve2(a, b, factorA, factorB, modAB int64) (finalCount int) {
+func solve2(a, b, factorA, factorB, modAB int) (finalCount int) {
 	i := 0
 	for i < 5000000 {
 		a, b = generatePartTwo(a, b, factorA, factorB, modAB)
@@ -33,7 +29,7 @@ func solve2(a, b, factorA, factorB, modAB int64) (finalCount int) {
 	return finalCount
 }
 
-func generatePartTwo(a, b, factorA, factorB, modAB int64) (int64, int64) {
+func generatePartTwo(a, b, factorA, factorB, modAB int) (int, int) {
 	a = (a * factorA) % modAB
 	b = (b * factorB) % modAB
 
@@ -47,7 +43,7 @@ func generatePartTwo(a, b, factorA, factorB, modAB int64) (int64, int64) {
 }
 
 // Part one
-func solve(a, b, factorA, factorB, modAB int64) (finalCount int) {
+func solve(a, b, factorA, factorB, modAB int) (finalCount int) {
 	i := 0
 	for i < 40000000 {
 		a = (a * factorA) % modAB
@@ -60,27 +56,9 @@ func solve(a, b, factorA, factorB, modAB int64) (finalCount int) {
 	return finalCount
 }
 
-func compareLast16bits(a, b int64) int {
-	stringA := strconv.FormatInt(a, 2)
-	stringB := strconv.FormatInt(b, 2)
-
-	lA := len(stringA)
-	lB := len(stringB)
-
-	if lA > 16 {
-		stringA = stringA[lA-16:]
-	} else {
-		stringA = stringA[:]
-	}
-
-	if lB > 16 {
-		stringB = stringB[lB-16:]
-	} else {
-		stringB = stringB[:]
-	}
-
-	//fmt.Printf("a last 16 bits: %s\nb last 16 bits: %s\n", stringA, stringB)
-	if stringA == stringB {
+func compareLast16bits(a, b int) int {
+	bitMask := 1<<16 - 1
+	if a&bitMask == b&bitMask {
 		return 1
 	}
 

@@ -7,8 +7,8 @@ import (
 func Test_compareLast16bits(t *testing.T) {
 	tests := []struct {
 		name string
-		a    int64
-		b    int64
+		a    int
+		b    int
 		want int
 	}{
 		{"1092455", 1092455, 430625591, 0},
@@ -28,11 +28,11 @@ func Test_compareLast16bits(t *testing.T) {
 
 func Test_solve(t *testing.T) {
 	type args struct {
-		a       int64
-		b       int64
-		factorA int64
-		factorB int64
-		modAB   int64
+		a       int
+		b       int
+		factorA int
+		factorB int
+		modAB   int
 	}
 	tests := []struct {
 		name           string
@@ -52,17 +52,17 @@ func Test_solve(t *testing.T) {
 
 func Test_generatePartTwo(t *testing.T) {
 	type args struct {
-		a       int64
-		b       int64
-		factorA int64
-		factorB int64
-		modAB   int64
+		a       int
+		b       int
+		factorA int
+		factorB int
+		modAB   int
 	}
 	tests := []struct {
 		name  string
 		args  args
-		want  int64
-		want1 int64
+		want  int
+		want1 int
 	}{
 		{"example1", args{65, 8921, 16807, 48271, 2147483647}, 1352636452, 1233683848},
 		{"example2", args{1352636452, 1233683848, 16807, 48271, 2147483647}, 1992081072, 862516352},
@@ -85,11 +85,11 @@ func Test_generatePartTwo(t *testing.T) {
 
 func Test_solve2(t *testing.T) {
 	type args struct {
-		a       int64
-		b       int64
-		factorA int64
-		factorB int64
-		modAB   int64
+		a       int
+		b       int
+		factorA int
+		factorB int
+		modAB   int
 	}
 	tests := []struct {
 		name           string
