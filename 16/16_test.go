@@ -1,10 +1,12 @@
 package main
 
-import "testing"
+import (
+	"testing"
+)
 
 func Test_solve(t *testing.T) {
 	type args struct {
-		dance      []string
+		dance      string
 		dancemoves []string
 	}
 	tests := []struct {
@@ -12,7 +14,7 @@ func Test_solve(t *testing.T) {
 		args args
 		want string
 	}{
-		{"example", args{[]string{"a", "b", "c", "d", "e"}, []string{"s1", "x3/4", "pe/b"}}, "baedc"},
+		{"example", args{"abcde", []string{"s1", "x3/4", "pe/b"}}, "baedc"},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

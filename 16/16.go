@@ -6,11 +6,6 @@ import (
 	"strings"
 )
 
-var dance = []string{
-	"a", "b", "c", "d", "e", "f", "g", "h",
-	"i", "j", "k", "l", "m", "n", "o", "p",
-}
-
 func main() {
 	buf, err := ioutil.ReadFile("16.txt")
 	if err != nil {
@@ -18,13 +13,37 @@ func main() {
 	}
 
 	s := string(buf)
+	danceMoves := strings.Split(s, ",")
+	var dance = "abcdefghijklmnop"
 
-	splitStrings := strings.Split(s, ",")
-	danceOrder := solve(dance, splitStrings)
-	println(danceOrder)
+	partOneDance := solve(dance, danceMoves)
+	println(partOneDance)
+
+	partTwoDance := solve2(dance, danceMoves)
+	println(partTwoDance)
 }
 
-func solve(dance, dancemoves []string) string {
+func solve2(dance string, dancemoves []string) string {
+	seen := map[string]string{}
+
+	i := 0
+	for i < 1000000000 {
+		s, ok := seen[dance]
+		if ok {
+			dance = s
+		} else {
+			d := solve(dance, dancemoves)
+			seen[dance] = d
+			dance = d
+		}
+		i++
+	}
+	return dance
+}
+
+func solve(d string, dancemoves []string) string {
+	dance := strings.Split(d, "")
+
 	for _, move := range dancemoves {
 		switch move[0] {
 		case 's':
@@ -61,7 +80,6 @@ func solve(dance, dancemoves []string) string {
 			prog1 := dance[index1]
 			dance[index1] = dance[index2]
 			dance[index2] = prog1
-
 			//fmt.Printf("PARTNER %s, progs: [%s / %s]\n, dance: %+v", instr, progs[0], progs[1], dance)
 		}
 	}
