@@ -25,12 +25,16 @@ func main() {
 
 func solve2(dance string, dancemoves []string) string {
 	seen := map[string]string{}
+	order := map[int]string{}
+
+	initial := dance
 
 	i := 0
-	for i < 1000000000 {
-		s, ok := seen[dance]
-		if ok {
-			dance = s
+	for {
+		order[i] = dance
+		_, ok := seen[dance]
+		if ok && dance == initial {
+			break
 		} else {
 			d := solve(dance, dancemoves)
 			seen[dance] = d
@@ -38,7 +42,8 @@ func solve2(dance string, dancemoves []string) string {
 		}
 		i++
 	}
-	return dance
+
+	return order[1000000000%i]
 }
 
 func solve(d string, dancemoves []string) string {
@@ -68,11 +73,11 @@ func solve(d string, dancemoves []string) string {
 			progs := strings.Split(instr, "/")
 
 			var index1, index2 int
-			for i := range dance {
-				if dance[i] == progs[0] {
+			for i, program := range dance {
+				if program == progs[0] {
 					index1 = i
 				}
-				if dance[i] == progs[1] {
+				if program == progs[1] {
 					index2 = i
 				}
 			}
