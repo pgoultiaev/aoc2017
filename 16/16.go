@@ -24,21 +24,16 @@ func main() {
 }
 
 func solve2(dance string, dancemoves []string) string {
-	seen := map[string]string{}
 	order := map[int]string{}
-
 	initial := dance
 
 	i := 0
 	for {
 		order[i] = dance
-		_, ok := seen[dance]
-		if ok && dance == initial {
+		if i != 0 && dance == initial {
 			break
 		} else {
-			d := solve(dance, dancemoves)
-			seen[dance] = d
-			dance = d
+			dance = solve(dance, dancemoves)
 		}
 		i++
 	}
