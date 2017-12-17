@@ -3,16 +3,38 @@ package main
 func main() {
 	input := 348
 
-	println(solve(2017, input))
+	partOne, valAfter0 := solve(2017, input)
+	println(partOne)
+	println(valAfter0)
+
+	partTwo := solve2(50000000, input)
+	println(partTwo)
 }
 
-func solve(lastValWritten, input int) int {
+func solve2(lastValWritten, input int) (valueAfter0 int) {
+	i := 1
+	currentPos := 0
+	lengthBuffer := 1
+	for i <= lastValWritten {
+		currentPos = (currentPos + input) % lengthBuffer
+
+		if currentPos == 0 {
+			valueAfter0 = i
+		}
+		lengthBuffer++
+		currentPos++
+		i++
+	}
+
+	return valueAfter0
+}
+
+func solve(lastValWritten, input int) (int, int) {
 	buffer := []int{0}
 	i := 1
 	currentPos := 0
-	for i <= 2017 {
+	for i <= lastValWritten {
 		currentPos = (currentPos + input) % len(buffer)
-		//fmt.Printf("currentPosition before: %d\n", currentPos)
 
 		if currentPos == len(buffer)-1 {
 			buffer = append(buffer, i)
@@ -21,12 +43,10 @@ func solve(lastValWritten, input int) int {
 			copy(buffer[currentPos+1:], buffer[currentPos:])
 			buffer[currentPos+1] = i
 		}
-		currentPos++
 
-		//fmt.Printf("buffer: %+v\n", buffer)
-		//fmt.Printf("currentPosition after: %d\n", currentPos)
+		currentPos++
 		i++
 	}
 
-	return buffer[currentPos+1]
+	return buffer[currentPos+1], buffer[1]
 }
