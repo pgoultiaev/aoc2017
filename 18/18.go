@@ -87,7 +87,6 @@ func solve(instructions [][]string) (lastNonNilFreq int) {
 			x, ok := registers[instr[1]]
 			if ok && x > 0 {
 				skipVal, _ := strconv.Atoi(instr[2])
-				println(skipVal)
 				i += skipVal - 1
 			}
 		}
