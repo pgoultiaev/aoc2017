@@ -11,9 +11,13 @@ import (
 )
 
 type Particle struct {
-	Xpos, Ypos, Zpos int
-	Xv, Yv, Zv       int
-	Xa, Ya, Za       int
+	position   Point
+	Xv, Yv, Zv int
+	Xa, Ya, Za int
+}
+
+type Point struct {
+	X, Y, Z int
 }
 
 func main() {
@@ -26,15 +30,52 @@ func main() {
 	scanner := bufio.NewScanner(file)
 
 	particles := map[int]Particle{}
+	particles2 := map[int]Particle{}
 	particleNum := 0
 	for scanner.Scan() {
 		particles[particleNum] = parse(scanner.Text())
+		particles2[particleNum] = parse(scanner.Text())
 		particleNum++
 	}
 
 	println(solve(particles))
+	println(solve2(particles2))
 }
 
+func solve2(particles map[int]Particle) (particleCount int) {
+	i := 0
+	for i < 5000 {
+		positions := map[Point][]int{}
+		for k, v := range particles {
+			v.Xv += v.Xa
+			v.Yv += v.Ya
+			v.Zv += v.Za
+			v.position.X += v.Xv
+			v.position.Y += v.Yv
+			v.position.Z += v.Zv
+			particles[k] = v
+
+			positions[v.position] = append(positions[v.position], k)
+		}
+		removeCollisions(particles, positions)
+		i++
+	}
+
+	return len(particles)
+}
+
+func removeCollisions(particles map[int]Particle, positions map[Point][]int) {
+	for _, ps := range positions {
+		if len(ps) > 1 {
+			for i := range ps {
+				//fmt.Printf("DELETING: %+v AT POINT: %+v\n", ps, p)
+				delete(particles, ps[i])
+			}
+		}
+	}
+}
+
+// Part one
 func solve(particles map[int]Particle) (particleNum int) {
 	distances := map[int]int{}
 
@@ -45,12 +86,12 @@ func solve(particles map[int]Particle) (particleNum int) {
 			v.Xv += v.Xa
 			v.Yv += v.Ya
 			v.Zv += v.Za
-			v.Xpos += v.Xv
-			v.Ypos += v.Yv
-			v.Zpos += v.Zv
+			v.position.X += v.Xv
+			v.position.Y += v.Yv
+			v.position.Z += v.Zv
 			particles[k] = v
 
-			distances[k] = manhattanDistance(v)
+			distances[k] = manhattanDistance(v.position)
 		}
 		particleNum = minDistance(distances)
 		//fmt.Printf("least distance particleNum: %d\n", particleNum)
@@ -72,8 +113,8 @@ func minDistance(distances map[int]int) int {
 	return leastDistParticle
 }
 
-func manhattanDistance(p Particle) int {
-	return util.Abs(p.Xpos) + util.Abs(p.Ypos) + util.Abs(p.Zpos)
+func manhattanDistance(p Point) int {
+	return util.Abs(p.X) + util.Abs(p.Y) + util.Abs(p.Z)
 }
 
 func parse(s string) Particle {
@@ -84,12 +125,12 @@ func parse(s string) Particle {
 	m1splitNstripped := strings.Split(util.Stripchars(matches[1], "<> "), ",")
 	m2splitNstripped := strings.Split(util.Stripchars(matches[2], "<> "), ",")
 
-	position := util.ConvStringArrayToIntArray(m0splitNstripped)
-	velocity := util.ConvStringArrayToIntArray(m1splitNstripped)
-	acceleration := util.ConvStringArrayToIntArray(m2splitNstripped)
+	p := util.ConvStringArrayToIntArray(m0splitNstripped)
+	v := util.ConvStringArrayToIntArray(m1splitNstripped)
+	a := util.ConvStringArrayToIntArray(m2splitNstripped)
 
-	return Particle{Xpos: position[0], Ypos: position[1], Zpos: position[2],
-		Xv: velocity[0], Yv: velocity[1], Zv: velocity[2],
-		Xa: acceleration[0], Ya: acceleration[1], Za: acceleration[2],
+	return Particle{position: Point{X: p[0], Y: p[1], Z: p[2]},
+		Xv: v[0], Yv: v[1], Zv: v[2],
+		Xa: a[0], Ya: a[1], Za: a[2],
 	}
 }
