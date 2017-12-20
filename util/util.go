@@ -93,3 +93,13 @@ func ConvByteArrayToIntArray(ba []byte) []int {
 	}
 	return output
 }
+
+// Stripchars removes all characters in str that match any char in chr
+func Stripchars(str, chr string) string {
+	return strings.Map(func(r rune) rune {
+		if strings.IndexRune(chr, r) < 0 {
+			return r
+		}
+		return -1
+	}, str)
+}
