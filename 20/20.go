@@ -47,8 +47,9 @@ func main() {
 }
 
 func solve2(particles map[int]Particle) (particleCount int) {
-	i := 0
-	for i < 5000 {
+	i := 1
+	l := len(particles)
+	for {
 		positions := map[Point][]int{}
 		for k, v := range particles {
 			v.Xv += v.Xa
@@ -62,6 +63,13 @@ func solve2(particles map[int]Particle) (particleCount int) {
 			positions[v.position] = append(positions[v.position], k)
 		}
 		removeCollisions(particles, positions)
+
+		// how to remove magic number 10?
+		if i%10 == 0 && len(particles) == l {
+			break
+		}
+		l = len(particles)
+
 		i++
 	}
 
