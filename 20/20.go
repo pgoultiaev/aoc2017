@@ -4,16 +4,20 @@ import (
 	"bufio"
 	"log"
 	"os"
+	"reflect"
 	"regexp"
+	"sort"
 	"strings"
 
 	"github.com/pgoultiaev/aoc2017/util"
 )
 
 type Particle struct {
-	position   Point
-	Xv, Yv, Zv int
-	Xa, Ya, Za int
+	position    Point
+	Xv, Yv, Zv  int
+	Xa, Ya, Za  int
+	distanceTo0 int
+	id          int
 }
 
 type Point struct {
@@ -29,13 +33,13 @@ func main() {
 
 	scanner := bufio.NewScanner(file)
 
-	particles := map[int]Particle{}
 	particles2 := map[int]Particle{}
-	particleNum := 0
+	particles := []Particle{}
+	particleID := 0
 	for scanner.Scan() {
-		particles[particleNum] = parse(scanner.Text())
-		particles2[particleNum] = parse(scanner.Text())
-		particleNum++
+		particles2[particleID] = parse(scanner.Text(), particleID)
+		particles = append(particles, parse(scanner.Text(), particleID))
+		particleID++
 	}
 
 	println(solve(particles))
@@ -76,48 +80,49 @@ func removeCollisions(particles map[int]Particle, positions map[Point][]int) {
 }
 
 // Part one
-func solve(particles map[int]Particle) (particleNum int) {
-	distances := map[int]int{}
+func solve(particles []Particle) (particleNum int) {
+	sortParticles(particles)
+	j := 0
+	for {
+		for i, p := range particles {
+			p.Xv += p.Xa
+			p.Yv += p.Ya
+			p.Zv += p.Za
+			p.position.X += p.Xv
+			p.position.Y += p.Yv
+			p.position.Z += p.Zv
+			p.distanceTo0 = manhattanDistance(p.position)
 
-	particleNum = -1
-	i := 0
-	for i < 5000 {
-		for k, v := range particles {
-			v.Xv += v.Xa
-			v.Yv += v.Ya
-			v.Zv += v.Za
-			v.position.X += v.Xv
-			v.position.Y += v.Yv
-			v.position.Z += v.Zv
-			particles[k] = v
-
-			distances[k] = manhattanDistance(v.position)
+			particles[i] = p
 		}
-		particleNum = minDistance(distances)
-		//fmt.Printf("least distance particleNum: %d\n", particleNum)
-		i++
+
+		newOrderedParticles := make([]Particle, len(particles))
+		copy(newOrderedParticles, particles)
+		sortParticles(newOrderedParticles)
+
+		// curious how to mathematically solve this
+		if j > 10 && reflect.DeepEqual(particles, newOrderedParticles) {
+			break
+		}
+		particles = newOrderedParticles
+
+		j++
 	}
 
-	return particleNum
+	return particles[0].id
 }
 
-func minDistance(distances map[int]int) int {
-	leastDistParticle := 0
-	min := distances[0]
-	for k, v := range distances {
-		if v < min {
-			min = v
-			leastDistParticle = k
-		}
-	}
-	return leastDistParticle
+func sortParticles(ps []Particle) {
+	sort.Slice(ps, func(i, j int) bool {
+		return ps[i].distanceTo0 < ps[j].distanceTo0
+	})
 }
 
 func manhattanDistance(p Point) int {
 	return util.Abs(p.X) + util.Abs(p.Y) + util.Abs(p.Z)
 }
 
-func parse(s string) Particle {
+func parse(s string, id int) Particle {
 	r := regexp.MustCompile(`<[^>]*>`)
 	matches := r.FindAllString(s, -1)
 
@@ -129,8 +134,13 @@ func parse(s string) Particle {
 	v := util.ConvStringArrayToIntArray(m1splitNstripped)
 	a := util.ConvStringArrayToIntArray(m2splitNstripped)
 
-	return Particle{position: Point{X: p[0], Y: p[1], Z: p[2]},
-		Xv: v[0], Yv: v[1], Zv: v[2],
+	pos := Point{X: p[0], Y: p[1], Z: p[2]}
+
+	return Particle{
+		position: pos,
+		Xv:       v[0], Yv: v[1], Zv: v[2],
 		Xa: a[0], Ya: a[1], Za: a[2],
+		distanceTo0: manhattanDistance(pos),
+		id:          id,
 	}
 }
