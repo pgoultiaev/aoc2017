@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# based on https://stackoverflow.com/questions/45776043/codeclimate-test-coverage-formatter-for-golang
 set -e
 
 for pkg in $(go list ./... | grep -v vendor); do
