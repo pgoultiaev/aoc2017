@@ -21,7 +21,7 @@ func Test_readInput(t *testing.T) {
 			Point{2, 2}: "#",
 			Point{1, 3}: "#",
 			Point{3, 3}: "#",
-		}, Point{1, 1}},
+		}, Point{2, 2}},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
