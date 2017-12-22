@@ -2,7 +2,6 @@ package main
 
 import (
 	"bufio"
-	"fmt"
 	"log"
 	"os"
 	"strings"
@@ -34,6 +33,7 @@ func main() {
 	println(solve2(grid2, middle, 10000000))
 }
 
+// Part two
 func solve2(grid map[Point]string, middle Point, bursts int) int {
 	directions := []Direction{up, right, down, left}
 	dirPointer := 0
@@ -41,7 +41,6 @@ func solve2(grid map[Point]string, middle Point, bursts int) int {
 	infectBursts := 0
 	virus := Virus{middle}
 	i := 0
-	fmt.Printf("middle: %+v\n", middle)
 
 	for i < bursts {
 		switch grid[virus.position] {
@@ -51,23 +50,18 @@ func solve2(grid map[Point]string, middle Point, bursts int) int {
 			} else {
 				dirPointer = (dirPointer - 1) % len(directions)
 			}
-			//fmt.Printf("[%s] -> [%s], turned left\n", grid[virus.position], "W")
 			grid[virus.position] = "W"
 		case "W":
-			//fmt.Printf("[%s] -> [%s]\n", grid[virus.position], "#")
 			grid[virus.position] = "#"
 			infectBursts++
 		case "#":
 			dirPointer = (dirPointer + 1) % len(directions)
-			//fmt.Printf("[%s] -> [%s], turned right\n", grid[virus.position], "F")
 			grid[virus.position] = "F"
 		case "F":
 			dirPointer = (dirPointer + 2) % len(directions)
-			//fmt.Printf("[%s] -> [%s], reversed\n", grid[virus.position], "")
 			grid[virus.position] = ""
-		default:
-			fmt.Print("SOMETHING IS WRONG!")
 		}
+
 		virus.move(directions[dirPointer])
 		i++
 	}
@@ -128,7 +122,7 @@ func readInput(filename string) (map[Point]string, Point) {
 		rowNum++
 	}
 
-	mid := (rowNum - 1) / 2
+	mid := rowNum / 2
 	middle := Point{mid, mid}
 
 	return grid, middle
