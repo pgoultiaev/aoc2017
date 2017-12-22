@@ -48,15 +48,45 @@ func Test_solve(t *testing.T) {
 		wantInfectBursts int
 	}{
 		{"example", args{map[Point]string{
-			Point{2, 0}: "#",
-			Point{0, 1}: "#"},
-			Point{1, 1}, 10000},
+			Point{3, 1}: "#",
+			Point{1, 2}: "#"},
+			Point{2, 2}, 10000},
 			5587},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			if gotInfectBursts := solve(tt.args.grid, tt.args.middle, tt.args.bursts); gotInfectBursts != tt.wantInfectBursts {
 				t.Errorf("solve() = %v, want %v", gotInfectBursts, tt.wantInfectBursts)
+			}
+		})
+	}
+}
+func Test_solve2(t *testing.T) {
+	type args struct {
+		grid   map[Point]string
+		middle Point
+		bursts int
+	}
+	tests := []struct {
+		name             string
+		args             args
+		wantInfectBursts int
+	}{
+		{"example", args{map[Point]string{
+			Point{3, 1}: "#",
+			Point{1, 2}: "#"},
+			Point{2, 2}, 100},
+			26},
+		{"example-long", args{map[Point]string{
+			Point{3, 1}: "#",
+			Point{1, 2}: "#"},
+			Point{2, 2}, 10000000},
+			2511944},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if gotInfectBursts := solve2(tt.args.grid, tt.args.middle, tt.args.bursts); gotInfectBursts != tt.wantInfectBursts {
+				t.Errorf("solve2() = %v, want %v", gotInfectBursts, tt.wantInfectBursts)
 			}
 		})
 	}
