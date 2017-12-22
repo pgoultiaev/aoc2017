@@ -12,15 +12,15 @@ func Test_readInput(t *testing.T) {
 	tests := []struct {
 		name       string
 		args       args
-		want       map[Point]bool
+		want       map[Point]string
 		wantMiddle Point
 	}{
-		{"example", args{"example.txt"}, map[Point]bool{
-			Point{1, 1}: true,
-			Point{3, 1}: true,
-			Point{2, 2}: true,
-			Point{1, 3}: true,
-			Point{3, 3}: true,
+		{"example", args{"example.txt"}, map[Point]string{
+			Point{1, 1}: "#",
+			Point{3, 1}: "#",
+			Point{2, 2}: "#",
+			Point{1, 3}: "#",
+			Point{3, 3}: "#",
 		}, Point{1, 1}},
 	}
 	for _, tt := range tests {
@@ -38,7 +38,7 @@ func Test_readInput(t *testing.T) {
 
 func Test_solve(t *testing.T) {
 	type args struct {
-		grid   map[Point]bool
+		grid   map[Point]string
 		middle Point
 		bursts int
 	}
@@ -47,9 +47,9 @@ func Test_solve(t *testing.T) {
 		args             args
 		wantInfectBursts int
 	}{
-		{"example", args{map[Point]bool{
-			Point{2, 0}: true,
-			Point{0, 1}: true},
+		{"example", args{map[Point]string{
+			Point{2, 0}: "#",
+			Point{0, 1}: "#"},
 			Point{1, 1}, 10000},
 			5587},
 	}
