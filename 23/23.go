@@ -2,7 +2,6 @@ package main
 
 import (
 	"bufio"
-	"fmt"
 	"log"
 	"os"
 	"strconv"
@@ -24,7 +23,35 @@ func main() {
 		instructions = append(instructions, slicedString)
 	}
 
-	println(solve(instructions))
+	mulInvoked := solve(instructions)
+	println(mulInvoked)
+
+	println(solve2())
+}
+
+func solve2() int {
+	h := 0
+	b := (79 * 100) + 100000
+	c := b + 17000 // sub b -17 1000 times
+
+	g := b - c
+	for g != 0 {
+		f0 := false
+
+		for d := 2; (d * d) < b; d++ {
+			if (b % d) == 0 {
+				f0 = true
+				break
+			}
+		}
+		if f0 {
+			h++
+		}
+		g = b - c
+		b += 17
+	}
+
+	return h
 }
 
 // Part one
@@ -33,7 +60,6 @@ func solve(instructions [][]string) (mulInvoked int) {
 	i := 0
 	for i < len(instructions) {
 		instr := instructions[i]
-		fmt.Printf("instr: %+v\n", instr)
 		x := instr[1]
 
 		switch instr[0] {
